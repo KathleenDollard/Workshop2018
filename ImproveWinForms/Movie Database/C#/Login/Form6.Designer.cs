@@ -54,7 +54,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.image = new System.Windows.Forms.PictureBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.sabihaDataSet2 = new Login.sabihaDataSet2();
+            this.sabihaDataSet2 = new global::Login.sabihaDataSet2();
             this.sabihaDataSet2BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();

@@ -13,7 +13,7 @@ namespace Login
 {
     public partial class Form5 : Form
     {
-        SqlConnection cn = new SqlConnection("Data Source=saif-server;Initial Catalog=sabiha;Integrated Security=True");
+        SqlConnection cn = new SqlConnection(Common.ConnectionString);
         SqlCommand cmd;
         SqlDataAdapter da, da1;
         DataTable dt = new DataTable();

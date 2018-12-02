@@ -14,7 +14,7 @@ namespace Login
     public partial class Form6 : Form
     {
         Image img;
-        SqlConnection cn = new SqlConnection("Data Source=saif-server;Initial Catalog=sabiha;Integrated Security=True");
+        SqlConnection cn = new SqlConnection(Common.ConnectionString);
         SqlCommand cmd;
         public Form6()
         {

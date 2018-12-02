@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -10,29 +6,53 @@ using System.IO;
 
 namespace Login
 {
-    class DataAccess
+    internal class DataAccess
     {
+
+        internal static bool Login(string userType, string userName, string password)
+        {
+            try
+            {
+                cn.Open();
+
+                string s = "SELECT * FROM tbl_login WHERE name='" + userName + "' AND password='" + password + "' AND user_type='" + userType + "'";
+                var cmd = new SqlCommand(s, cn);
+                return (cmd.ExecuteScalar() != null);
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                cn.Close();
+            }
+        }
+
+
         private static byte[] imagetoByte(Image img)
         {
-            MemoryStream ms = new MemoryStream();
+            var ms = new MemoryStream();
             img.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
             return ms.ToArray();
         }
 
-        public static Image ByteToImage(Byte[] byt)
+        public static Image ByteToImage(byte[] byt)
         {
-            MemoryStream ms = new MemoryStream(byt);
-            Image returnImage = Image.FromStream(ms);
+            var ms = new MemoryStream(byt);
+            var returnImage = Image.FromStream(ms);
             return returnImage;
         }
 
-
-        static SqlConnection cn = new SqlConnection("Data Source=saif-server;Initial Catalog=sabiha;Integrated Security=True");
+        private static SqlConnection cn = new SqlConnection(Common.ConnectionString);
         public static int addEditImage(string name, int year, string actor, string actress, string category, string quality, string sound, string language, string myopinion, string director, Image image, string link)
         {
-            Byte[] img = imagetoByte(image);
-            SqlCommand cmd = new SqlCommand("addEditImage", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
+            byte[] img = imagetoByte(image);
+            var cmd = new SqlCommand("addEditImage", cn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@year", year);
             cmd.Parameters.AddWithValue("@actor", actor);
@@ -56,9 +76,11 @@ namespace Login
 
         public static int updateTableMovie(string name, int year, string actor, string actress, string category, string quality, string sound, string language, string myopinion, string director, Image image, string link, string updateName, int updateYear)
         {
-            Byte[] img = imagetoByte(image);
-            SqlCommand cmd = new SqlCommand("updateTableMovie", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
+            byte[] img = imagetoByte(image);
+            var cmd = new SqlCommand("updateTableMovie", cn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@year", year);
             cmd.Parameters.AddWithValue("@actor", actor);
@@ -84,37 +106,46 @@ namespace Login
 
         public static DataTable getAllImages()
         {
-            SqlDataAdapter DA = new SqlDataAdapter("getAllImages", cn);
+            var DA = new SqlDataAdapter("getAllImages", cn);
             DA.SelectCommand.CommandType = CommandType.StoredProcedure;
-            DataTable DT = new DataTable();
+            var DT = new DataTable();
             if (cn.State == ConnectionState.Closed)
+            {
                 cn.Open();
+            }
+
             DA.Fill(DT);
             cn.Close();
             return DT;
         }
-        
+
         public static DataTable getImage(string name, int year)
         {
-            SqlDataAdapter DA = new SqlDataAdapter("getImage", cn);
+            var DA = new SqlDataAdapter("getImage", cn);
             DA.SelectCommand.Parameters.AddWithValue("@name", name);
             DA.SelectCommand.Parameters.AddWithValue("@year", year);
             DA.SelectCommand.CommandType = CommandType.StoredProcedure;
-            DataTable DT = new DataTable();
+            var DT = new DataTable();
             if (cn.State == ConnectionState.Closed)
+            {
                 cn.Open();
+            }
+
             DA.Fill(DT);
             cn.Close();
             return DT;
         }
         public static DataTable getImage1(int year)
         {
-            SqlDataAdapter DA = new SqlDataAdapter("getImage1", cn);
+            var DA = new SqlDataAdapter("getImage1", cn);
             DA.SelectCommand.Parameters.AddWithValue("@year", year);
             DA.SelectCommand.CommandType = CommandType.StoredProcedure;
-            DataTable DT = new DataTable();
+            var DT = new DataTable();
             if (cn.State == ConnectionState.Closed)
+            {
                 cn.Open();
+            }
+
             DA.Fill(DT);
             cn.Close();
             return DT;

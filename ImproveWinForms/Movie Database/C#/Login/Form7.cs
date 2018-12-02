@@ -13,8 +13,7 @@ namespace Login
 {
     public partial class Form7 : Form
     {
-        SqlConnection cn = new SqlConnection("Data Source=saif-server;Initial Catalog=sabiha;Integrated Security=True");
-        SqlCommand cmd;
+        SqlConnection cn = new SqlConnection(Common.ConnectionString); SqlCommand cmd;
         public Form7()
         {
             InitializeComponent();
@@ -35,7 +34,7 @@ namespace Login
                 cmd = new SqlCommand(s, cn);
                 cmd.ExecuteNonQuery();
                 cn.Close();
-                new Form1().Show();
+                new Login().Show();
                 this.Hide();
             }
             catch (Exception ex)
